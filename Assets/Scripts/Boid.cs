@@ -20,9 +20,7 @@ public class Boid : MonoBehaviour
         Vector3 vel = Random.onUnitSphere * Spawner.S.velocity;
         rigid.velocity = vel;
 
-        LookAhead();
-
-        /*
+        
         Color randColor = Color.black;
         while (randColor.r + randColor.g + randColor.b < 1.0f)
         {
@@ -36,8 +34,40 @@ public class Boid : MonoBehaviour
         }
         TrailRenderer tRend = GetComponent<TrailRenderer>();
         tRend.material.SetColor("_TintColor", randColor);
-        */
+        
     }
+
+    void FixedUpdate()
+    {
+        Vector3 vel = rigid.velocity;
+        Spawner spn = Spawner.S;
+
+        // Attraction: move towards the atractor
+        Vector3 delta = Attractor.POS - pos;
+
+        // attrated or avoiding?
+        bool attracted = (delta.magnitude > spn.attractPushDist);
+        Vector3 velAttract = delta.normalized * spn.velocity;
+
+        // Apply all the velocitires
+        float fdt = Time.fixedDeltaTime;
+        
+        if( attracted )
+        {
+            vel = Vector3.Lerp(vel, velAttract, spn.attractPushDist * fdt);
+        }
+        else
+        {
+            vel = Vector3.Lerp(vel, -velAttract, spn.attractPushDist * fdt);
+
+        }
+
+        vel = vel.normalized * spn.velocity;
+
+        rigid.velocity = vel;
+        LookAhead();
+    }
+
 
     void LookAhead()
     {
