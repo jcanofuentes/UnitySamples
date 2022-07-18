@@ -10,7 +10,12 @@ public class DistributedParticles
     void Start()
     {
         //Vector3[] points = DistributionHelper.Cube(100);
-        Vector3[] points = DistributionHelper.Sphere(100);
+        //Vector3[] points = DistributionHelper.Sphere(100);
+        //Vector3[] points = DistributionHelper.HollowSpherical(60,100);
+        //Vector3[] points = DistributionHelper.Box(100, 100,100);
+        //Vector3[] points = DistributionHelper.Disk( 100);
+        Vector3[] points = DistributionHelper.Cylindrical( 100, 60);
+        //Vector3[] points = DistributionHelper.Cone( 1000, 10);
 
         foreach (Vector3 v in points)
         {
